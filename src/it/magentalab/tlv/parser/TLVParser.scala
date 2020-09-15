@@ -17,8 +17,8 @@ object TLVParser {
 
   protected def extract(bytes: List[Byte]): Option[TLVData] = {
     if (bytes.isEmpty) Option.empty
-    else if (bytes.length < 3)
-      throw new Exception("Not a valid TLV, lengths are wrong")
+    else if (bytes.length < 2)
+      throw new Exception("Not a valid TLV. Data less then 2 bytes!")
     else {
       val tag = bytes.head
       val length = bytes.tail.head
