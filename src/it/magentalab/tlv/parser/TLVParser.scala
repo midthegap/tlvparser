@@ -23,6 +23,10 @@ object TLVParser {
       val tag = bytes.head
       val length = bytes.tail.head
       val data = bytes.tail.tail.take(length)
+      if (data.length < length) {
+        val tagHex = "%02X".format(tag)
+        throw new Exception(s"Tag $tagHex is not a valid TLV. Data length less then expected: ${data.length} instead of $length")
+      }
       Option(TLVData(tag, length, data))
     }
   }
