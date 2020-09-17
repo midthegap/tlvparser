@@ -38,11 +38,17 @@ object TLVParser {
   }
 
   protected def split(bytes: List[Byte]): List[TLVData] = {
+    split(bytes, List[TLVData]())
+  }
+
+  @tailrec
+  protected def split(bytes: List[Byte], acc: List[TLVData]): List[TLVData] = {
     val tlv = extract(bytes)
     if (tlv.isDefined) {
-      tlv.get :: split(skip(bytes, tlv.get.length + 2))
+      val newAcc = tlv.get :: acc
+      split(skip(bytes, tlv.get.length + 2), newAcc)
     } else {
-      List[TLVData]()
+      acc.reverse
     }
   }
 
